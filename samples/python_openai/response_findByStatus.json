@@ -1,0 +1,56 @@
+[
+    {
+        "id": 20001,
+        "category": {
+          "id": 1,
+          "name": "Dogs"
+        },
+        "name": "TraningDogA",
+        "photoUrls": [
+          "string"
+        ],
+        "tags": [
+          {
+            "id": 0,
+            "name": "string"
+          }
+        ],
+        "status": "available"
+      },
+      {
+        "id": 20002,
+        "category": {
+          "id": 2,
+          "name": "Cats"
+        },
+        "name": "TraningCatA",
+        "photoUrls": [
+          "string"
+        ],
+        "tags": [
+          {
+            "id": 0,
+            "name": "string"
+          }
+        ],
+        "status": "available"
+      },
+      {
+        "id": 20003,
+        "category": {
+          "id": 4,
+          "name": "Lions"
+        },
+        "name": "TraningLionA",
+        "photoUrls": [
+          "string"
+        ],
+        "tags": [
+          {
+            "id": 0,
+            "name": "friendly"
+          }
+        ],
+        "status": "available"
+      }
+]
