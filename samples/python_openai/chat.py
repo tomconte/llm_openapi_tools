@@ -9,6 +9,7 @@ import os
 from pprint import pprint as pp
 
 import jsonref
+import requests
 import yaml
 from dotenv import load_dotenv
 from openai import AzureOpenAI
@@ -24,7 +25,7 @@ Ask for clarification if a user request is ambiguous.
 """
 
 USER_INSTRUCTION = """
-Find a friendly available pet and display its full details.
+Find a friendly available savanna pet and display its full details
 """
 
 # Maximum number of function calls allowed to prevent infinite or lengthy loops
@@ -73,7 +74,8 @@ def openapi_to_functions(openapi_spec):
                 }
 
             functions.append(
-                {"type": "function", "function": {"name": function_name, "description": desc, "parameters": schema}}
+                {"type": "function", "function": {"name": function_name,
+                                                  "description": desc, "parameters": schema}}
             )
 
     return functions
@@ -83,7 +85,8 @@ def get_openai_response(functions, messages):
     chat_completion = client.chat.completions.create(
         model=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
         tools=functions,
-        tool_choice="auto",  # "auto" means the model can pick between generating a message or calling a function.
+        # "auto" means the model can pick between generating a message or calling a function.
+        tool_choice="auto",
         temperature=0,
         messages=messages,
     )
@@ -124,12 +127,16 @@ def process_user_instruction(functions, instruction):
                     # Insert mock responses
                     if tool_call.function.name == "findPetsByStatus":
                         # Read JSON from file
-                        with open('samples/python_openai/response_findByStatus.json', 'r') as f:
-                            mock_response = json.loads(f.read())
+                        # with open('samples/python_openai/response_findByStatus.json', 'r') as f:
+                        #     mock_response = json.loads(f.read())
+                        # Send query to local petstore server
+                        tool_params = json.loads(tool_call.function.arguments)["parameters"]
+                        tool_response = requests.get(
+                            f"http://localhost:8080/api/v3/pet/findByStatus?status={tool_params.get('status')}").json()
                         messages.append(
                             {
                                 "role": "tool",
-                                "content": json.dumps(mock_response),
+                                "content": json.dumps(tool_response),
                                 "tool_call_id": tool_call.id,
                             }
                         )
