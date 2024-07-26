@@ -22,6 +22,6 @@ The following example specs and manifest are provided in the `tests/__fixtures__
 
 ### Examples
 
-A number of examples are provided to show how to use the specialized OpenAPI specs to generate function calls. They can help to compare the behaviour of the LLM when using the original spec vs. the specialized one.
+A number of examples are provided to show how to use the specialized OpenAPI specs to generate function calls, using various AI frameworks such as LangChain or Semantic Kernel. They can help to compare the behaviour of the LLM when using the original spec vs. the specialized one.
 
 These examples are located in the `samples` directory. See the README there for more information.
