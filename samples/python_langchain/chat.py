@@ -9,7 +9,7 @@ from langchain_community.agent_toolkits.openapi.spec import reduce_openapi_spec
 from langchain_community.utilities import RequestsWrapper
 from langchain_openai import AzureChatOpenAI
 
-from plugin_registry.spec import convert_spec
+from llm_functools.openapi import convert_spec
 
 load_dotenv()
 

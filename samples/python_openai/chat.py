@@ -14,7 +14,7 @@ import yaml
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
-from plugin_registry.spec import convert_spec
+from llm_functools.openapi import convert_spec
 
 load_dotenv()
 

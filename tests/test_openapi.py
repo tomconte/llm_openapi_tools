@@ -5,7 +5,7 @@ import yaml
 
 from openapi_spec_validator.validation.exceptions import OpenAPIValidationError
 
-from plugin_registry.spec import convert_spec
+from llm_functools.openapi import convert_spec
 
 
 @pytest.fixture(scope="session")
