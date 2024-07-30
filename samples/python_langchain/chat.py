@@ -9,7 +9,7 @@ from langchain_community.agent_toolkits.openapi.spec import reduce_openapi_spec
 from langchain_community.utilities import RequestsWrapper
 from langchain_openai import AzureChatOpenAI
 
-from llm_functools.openapi import convert_spec
+from llm_openapi_tools.openapi import convert_spec
 
 load_dotenv()
 
@@ -25,7 +25,7 @@ def main():
     reduced_base_openapi_spec = reduce_openapi_spec(base_openapi_spec)
 
     # GenAI plugin config
-    with open('tests/__fixtures__/plugins/petstore-v3.yaml', 'r') as f:
+    with open('tests/__fixtures__/manifests/petstore-v3.yaml', 'r') as f:
         plugin_config = yaml.safe_load(f)
 
     requests_wrapper = RequestsWrapper()

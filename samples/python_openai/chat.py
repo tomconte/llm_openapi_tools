@@ -14,7 +14,7 @@ import yaml
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
-from llm_functools.openapi import convert_spec
+from llm_openapi_tools.openapi import convert_spec
 
 load_dotenv()
 
@@ -124,11 +124,8 @@ def process_user_instruction(functions, instruction):
             # Normally, you'd want to call the function here, and append the results to messages.
             if message.tool_calls:
                 for tool_call in message.tool_calls:
-                    # Insert mock responses
+                    # Insert responses
                     if tool_call.function.name == "findPetsByStatus":
-                        # Read JSON from file
-                        # with open('samples/python_openai/response_findByStatus.json', 'r') as f:
-                        #     mock_response = json.loads(f.read())
                         # Send query to local petstore server
                         tool_params = json.loads(tool_call.function.arguments)["parameters"]
                         tool_response = requests.get(
@@ -164,7 +161,7 @@ def main():
         base_openapi_spec = jsonref.loads(f.read())
 
     # GenAI plugin config
-    with open('tests/__fixtures__/plugins/petstore-v3.yaml', 'r') as f:
+    with open('tests/__fixtures__/manifests/petstore-v3.yaml', 'r') as f:
         plugin_config = yaml.safe_load(f)
 
     # Convert the base OpenAPI spec to a list of functions

@@ -5,12 +5,12 @@ import yaml
 
 from openapi_spec_validator.validation.exceptions import OpenAPIValidationError
 
-from llm_functools.openapi import convert_spec
+from llm_openapi_tools.openapi import convert_spec
 
 
 @pytest.fixture(scope="session")
 def plugin_config():
-    with open('tests/__fixtures__/plugins/petstore-v3.yaml', 'r') as f:
+    with open('tests/__fixtures__/manifests/petstore-v3.yaml', 'r') as f:
         return yaml.safe_load(f)
 
 

@@ -44,7 +44,7 @@ var functionParameters = new OpenApiFunctionExecutionParameters();
 
 await kernel.ImportPluginFromOpenApiAsync(
     "PetStoreAPI",
-    "../../tests/__fixtures__/plugins/petstore-v3-openapi-plugin.json",
+    "../../tests/__fixtures__/llm_friendly_specs/petstore-v3-openapi-plugin.json",
     functionParameters);
 
 // Prepare prompts
