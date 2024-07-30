@@ -20,8 +20,8 @@ def main(input, manifest):
 if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("input", help="Input file path")
-    parser.add_argument("manifest", help="Manifest file path")
+    parser.add_argument("input", help="Input file path (JSON OpenAPI spec)")
+    parser.add_argument("manifest", help="Manifest file path (YAML)")
     args = parser.parse_args()
 
     main(args.input, args.manifest)
