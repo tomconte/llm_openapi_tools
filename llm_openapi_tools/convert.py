@@ -2,7 +2,7 @@ import argparse
 import json
 import yaml
 
-from llm_functools.openapi import convert_spec
+from llm_openapi_tools.openapi import convert_spec
 
 
 def main(input, manifest):
