@@ -8,10 +8,14 @@ def convert_spec(openapi_spec: dict, plugin_config: dict) -> dict:
     # Make sure the spec is valid
     validate(openapi_spec)
 
+    # Include plans in the new spec
+    plans = plugin_config.get("plans", [])
+
     # Create a new OpenAPI spec based on the original
     new_spec = {
         "openapi": openapi_spec["openapi"],
         "info": openapi_spec["info"],
+        "x-llm-plans": plans,
         "servers": openapi_spec["servers"] if "servers" in openapi_spec else [],
         "paths": {},
         "components": openapi_spec["components"] if "components" in openapi_spec else {},

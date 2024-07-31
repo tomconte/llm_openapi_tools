@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 from openai import AzureOpenAI
 
 from llm_openapi_tools.openapi import convert_spec
+from llm_openapi_tools.tools import (generate_tools_pseudocode,
+                                     pretty_print_tools)
 
 load_dotenv()
 
@@ -68,7 +70,7 @@ def openapi_to_functions(openapi_spec):
                     for param in params
                     if "schema" in param
                 }
-                schema["properties"]["parameters"] = {
+                schema = {
                     "type": "object",
                     "properties": param_properties,
                 }
@@ -127,7 +129,7 @@ def process_user_instruction(functions, instruction):
                     # Insert responses
                     if tool_call.function.name == "findPetsByStatus":
                         # Send query to local petstore server
-                        tool_params = json.loads(tool_call.function.arguments)["parameters"]
+                        tool_params = json.loads(tool_call.function.arguments)
                         tool_response = requests.get(
                             f"http://localhost:8080/api/v3/pet/findByStatus?status={tool_params.get('status')}").json()
                         messages.append(
@@ -167,8 +169,11 @@ def main():
     # Convert the base OpenAPI spec to a list of functions
     base_functions = openapi_to_functions(base_openapi_spec)
 
+    print("\n\n### Testing base functions:")
     pp(base_functions)
     print(f"\n\n### Number of functions in base API: {len(base_functions)}")
+
+    process_user_instruction(base_functions, USER_INSTRUCTION)
 
     ################################################################################
     # Here the AI Plugin Registry library is used to convert the original OpenAPI
@@ -183,16 +188,19 @@ def main():
     # Convert the GenAI OpenAPI spec to a list of functions
     genai_functions = openapi_to_functions(genai_openapi_spec)
 
-    pp(genai_functions)
+    print("\n\n### Testing GenAI functions:")
+    pretty_print_tools(genai_functions)
     print(f"\n\n### Number of functions in GenAI API: {len(genai_functions)}")
 
-    # Test both set of functions with a test prompt
+    # Add the plans to the user instructions
+    plans = genai_openapi_spec.get("x-llm-plans", [])
+    user_instruction = "Possible execution plans:\n"
+    for p in plans:
+        user_instruction += f"\n{p['intent']}:\n{p['plan']}\n"
+    user_instruction += "\nUser instructions:\n"
+    user_instruction += USER_INSTRUCTION
 
-    print("\n\n### Testing base functions:")
-    process_user_instruction(base_functions, USER_INSTRUCTION)
-
-    print("\n\n### Testing GenAI functions:")
-    process_user_instruction(genai_functions, USER_INSTRUCTION)
+    process_user_instruction(genai_functions, user_instruction)
 
 
 if __name__ == "__main__":

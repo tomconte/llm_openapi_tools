@@ -1,5 +1,5 @@
 info:
-  title: Pet Store plugin
+  title: Pet Store API
   description: Use this API to retrieve information about pets.
 operations:
   - path: /pet/{petId}
@@ -8,3 +8,8 @@ operations:
   - path: /pet/findByStatus
     method: get
     description: "Find pets by status. Use the `status` parameter to indicate the status. Multiple status values can be provided with comma separated strings."
+plans:
+  - intent: "Find a pet with specific characteristics"
+    plan: |
+      - Call findPetsByStatus(available) to get a list of available pets.
+      - Examine the tags in the response to determine if a pet has the desired characteristics.
