@@ -139,6 +139,18 @@ def process_user_instruction(functions, instruction):
                                 "tool_call_id": tool_call.id,
                             }
                         )
+                    elif tool_call.function.name == "getPetById":
+                        # Send query to local petstore service
+                        tool_params = json.loads(tool_call.function.arguments)
+                        tool_response = requests.get(
+                            f"http://localhost:8080/api/v3/pet/{tool_params.get('petId')}").json()
+                        messages.append(
+                            {
+                                "role": "tool",
+                                "content": json.dumps(tool_response),
+                                "tool_call_id": tool_call.id,
+                            }
+                        )
                     else:
                         messages.append(
                             {
@@ -194,7 +206,9 @@ def main():
 
     # Add the plans to the user instructions
     plans = genai_openapi_spec.get("x-llm-plans", [])
-    user_instruction = "Possible execution plans:\n"
+    user_instruction = "Available functions in pseudocode:\n"
+    user_instruction += "\n".join(generate_tools_pseudocode(genai_functions))
+    user_instruction += "\nPossible execution plans:\n"
     for p in plans:
         user_instruction += f"\n{p['intent']}:\n{p['plan']}\n"
     user_instruction += "\nUser instructions:\n"
